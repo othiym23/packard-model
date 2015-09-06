@@ -26,3 +26,15 @@ Scrubs characters that aren't filesystem-safe from `name`. This list is probably
 ### file.getSize(blockSize)
 The size of the file.
 - `blockSize`: Since the ultimate purpose of packard is to figure out how to get the most audio files onto a storage medium, it's helpful for it to be able to get the size of files in terms of the integer number of blocks the file will occupy on that particular medium. For the same reason, it rounds up.
+
+## Archive
+`Archive`s include one or more audio files and other associated assets. They also typically have metadata (tables of contents, internal block sizes, stream types) extracted from the files by e.g. compressed stream readers.
+
+### new Archive(path, stats[, info])
+Same as new File(), except an optional object literal containing metadata specific to `Archive` instead of the extension.
+
+## Cuesheet
+A `Cuesheet` should eventually be able to produce a `MultitrackAlbum` from its own metadata, but for now, it's just a type of file ("type" being the key word, as the type of `Cuesheet` objects is used by the packard scanner).
+
+### new Cuesheet(path, stats)
+Same as `new File()`, except the extension is _always_ deduced from the filename.
