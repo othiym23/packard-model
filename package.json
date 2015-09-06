@@ -1,0 +1,44 @@
+{
+  "name": "@packard/models",
+  "version": "1.0.0",
+  "description": "data models used by the packard audio file management suite",
+  "main": "lib/index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "transpile": "babel src -d lib",
+    "prepublish": "npm run transpile",
+    "test": "standard && npm run transpile && tap test/*.js --coverage",
+    "standard": "standard"
+  },
+  "standard": {
+    "ignore": [
+      "lib/**"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/othiym23/packard-models.git"
+  },
+  "keywords": [
+    "packard",
+    "metadata",
+    "models"
+  ],
+  "author": "Forrest L Norvell <ogd@aoaioxxysz.net>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/othiym23/packard-models/issues"
+  },
+  "homepage": "https://github.com/othiym23/packard-models#readme",
+  "devDependencies": {
+    "standard": "^5.2.1",
+    "tap": "^1.4.0"
+  },
+  "dependencies": {
+    "babel": "^5.8.23",
+    "npmlog": "^1.2.1",
+    "sprintf": "^0.1.5"
+  }
+}
