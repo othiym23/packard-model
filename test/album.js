@@ -1,10 +1,11 @@
 var test = require('tap').test
 
-var Artist = require('../lib/artist.js')
-var BaseAlbum = require('../lib/album-base.js')
-var Cover = require('../lib/cover.js')
-var MultitrackAlbum = require('../lib/album-multi.js')
-var Track = require('../lib/track.js')
+var models = require('../')
+var Artist = models.Artist
+var BaseAlbum = models.Album
+var Cover = models.Cover
+var MultitrackAlbum = models.MultitrackAlbum
+var Track = models.Track
 
 test('base album missing information', function (t) {
   var album
