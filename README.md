@@ -72,7 +72,7 @@ Additional properties:
 - `file`: The physical `AudioFile` associated with this logical album.
 - `cuesheet`: A `Cuesheet`.
 
-### SingletrackAlbum(name, artist[, optional])
+### new SingletrackAlbum(name, artist[, optional])
 Same as `new Album()`, but with these additional properties:
 - `optional.file`: An object representing the underlying file.
 - `optional.path` and `optional.stats`: The elements necessary for the constructor to create the `AudioFile` for you. If you want to use this, both must be included.
@@ -92,7 +92,7 @@ Additional properties:
 - `sourceArchive`: The original location of the archive from which the `Tracks` comprising the album were extracted.
 - `destArchive`: The location to which the archive should be moved.
 
-### MultitrackAlbum(name, artist[, optional])
+### new MultitrackAlbum(name, artist[, optional])
 Same as `new Album()`, but with these additional properties:
 - `optional.tracks`: An array of `Track`s.
 
@@ -104,3 +104,22 @@ Builds a set from all of the dates found on `Tracks` for this release. Warns if 
 
 ### multitrack.dump()
 Produce a human-readable representation of the metadata associated with the album.
+
+## Artist
+An `Artist` is mostly a convenient container from which to hang a collection of albums and miscellaneous tracks, mostly useful for calculating the amount of space used by that `Artist`'s material.
+
+Properties:
+- `name`: The name of the artist.
+- `albums`: Albums associated with this artist.
+- `otherTracks`: Loose tracks associated with this artist.
+
+### new Artist(name[, optional])
+- `name`: The name of the artist.
+- `optional.albums`: Albums associated with this artist. Associating albums sets their artist to this artist.
+- `optional.otherTracks`: Loose tracks associated with this artist. Associating tracks sets their artist to this artist.
+
+### artist.addOtherTracks(tracks)
+Concatenate a list of tracks with the existing list of other tracks, ensuring that their artists are set to this artist.
+
+### artist.getSize(bs)
+Return the total size, in blocks (with block size specified by `bs`), of all the albums and tracks assocated with the artist.
