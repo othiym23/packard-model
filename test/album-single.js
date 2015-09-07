@@ -1,11 +1,11 @@
 var test = require('tap').test
 
-var models = require('../')
-var Artist = models.Artist
-var AudioFile = models.AudioFile
-var Cover = models.Cover
-var SingletrackAlbum = models.SingletrackAlbum
-var Track = models.Track
+var model = require('../')
+var Artist = model.Artist
+var AudioFile = model.AudioFile
+var Cover = model.Cover
+var SingletrackAlbum = model.SingletrackAlbum
+var Track = model.Track
 
 test('single-track album missing information', function (t) {
   var album

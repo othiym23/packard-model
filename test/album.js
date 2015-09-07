@@ -1,9 +1,9 @@
 var test = require('tap').test
 
-var models = require('../')
-var Album = models.Album
-var Artist = models.Artist
-var Cover = models.Cover
+var model = require('../')
+var Album = model.Album
+var Artist = model.Artist
+var Cover = model.Cover
 
 test('base album missing information', function (t) {
   var album
