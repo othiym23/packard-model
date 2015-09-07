@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/othiym23/packard-models.svg)](https://travis-ci.org/othiym23/packard-models) [![Coverage Status](https://coveralls.io/repos/othiym23/packard-models/badge.svg?branch=master)](https://coveralls.io/r/othiym23/packard-models?branch=master)
 
-# @packard/models
-The models used by the packard audio file management suite. Model objects are for properties and business logic only; persistence logic lives in the DAOs, and workflows live in e.g. the packard scanner, cache, and CLI. These should stay pretty simple.
+# @packard/model
+The entity types used by the packard audio file management suite. Model objects are for properties and business logic only; persistence logic lives in the DAOs, and workflows live in the packard scanner, cache, and CLI. These should stay pretty simple.
 
 ## File
 `File` is meant to be used as a base for anything that lives on the file system and has filesystem metadata associated with it.
@@ -90,6 +90,9 @@ Same as `new Album()`, but with these additional properties:
 - `optional.path` and `optional.stats`: The elements necessary for the constructor to create the `AudioFile` for you. If you want to use this, both must be included.
 - `optional.cuesheet`: A `Cuesheet`.
 
+### singletrack.getSize(bs)
+Return the total size, in blocks (with block size specified by `bs`), of the file associated with the track underlying the album.
+
 ### singletrack.dump()
 Produce a human-readable representation of the metadata associated with the album.
 
@@ -134,4 +137,50 @@ Properties:
 Concatenate a list of tracks with the existing list of other tracks, ensuring that their artists are set to this artist.
 
 ### artist.getSize(bs)
-Return the total size, in blocks (with block size specified by `bs`), of all the albums and tracks assocated with the artist.
+Return the total size, in blocks (with block size specified by `bs`), of all the albums and tracks associated with the artist.
+
+## Track
+`Track`s are the most important type in the model. Everything that makes sounds has its metadata associated with a `Track`. As such, there's a lot of default behavior associated with `Tracks`, which is intended to make it easy to work with them.
+
+Properties:
+- `name`: The track name.
+- `album`: The `Album` on which the track appears.
+- `artist`: The `Artist` who made the track.
+- `file`: The `AudioFile` containing the actual audio for the track.
+- `index`: The track index on the original album.
+- `disc`: On which disc (of a multi-disc set) the track appeared.
+- `date`: Release date for the track.
+- `duration`: Duration of the track, in seconds. Can include fractions of a second. _May eventually be replaced with a time type that can handle CDDA frames or other frame / sample lengths._
+- `flacTags`: Metadata tags from an Ogg Vorbis container for FLAC audio. _Will probably be generalized to audio file tags, or a dedicated class for abstracting away the various conventions for naming tags._
+- `musicbrainzTags`: Musicbrainz metadata. _Will probably be abstracted out into a parallel set of classes for MB metadata._
+- `sourceArchive`: The `Archive` that originally contained this `Track`.
+- `fsTrack`: Another `Track` populated with metadata derived from the name and location of the track on the filesystem.
+- `fsAlbum`: An `Album` populated with metadata derived from the name and location of the album on the filesystem.
+- `fsArtist`: An `Artist` populated with metadata derived from the name and location of the artist on the filesystem.
+
+### new Track([name, album, artist, optional])
+- `name`: The track name. Defaults to '[untitled]'.
+- `album`: The album on which the track appears. Defaults to an album named '[untitled]'.
+- `artist`: The artist who made the track. Defaults to an artist named '[unknown]'.
+- `optional.file`: An object representing the underlying file.
+- `optional.path` and `optional.stats`: The elements necessary for the constructor to create the `AudioFile` for you. If you want to use this, both must be included.
+- `optional.ext`
+- `optional.index`: The track index on the original album. Defaults to 0.
+- `optional.disc`: On which disc (of a multi-disc set) the track appeared. Defaults to 0.
+- `optional.date`: Release date for the track.
+- `optional.duration`: Duration of the track, in seconds. Can include fractions of a second.
+- `optional.flacTags`: Metadata tags from an Ogg Vorbis container for FLAC audio.
+- `optional.musicbrainzTags`: Musicbrainz metadata.
+- `optional.sourceArchive`: The `Archive` that originally contained this `Track`.
+- `optional.fsTrack`: Another `Track` populated with metadata derived from the name and location of the track on the filesystem.
+- `optional.fsAlbum`: An `Album` populated with metadata derived from the name and location of the album on the filesystem.
+- `optional.fsArtist`: An `Artist` populated with metadata derived from the name and location of the artist on the filesystem.
+
+### track.getSize()
+Return the total size, in blocks (with block size specified by `bs`), of the track.
+
+### track.fullName()
+The canonical name format for the track, including (if set) the track number. _Should probably also include the disc number in there somewhere._
+
+### track.safeName()
+A filesystem-safe version of the track name.

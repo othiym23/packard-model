@@ -9,9 +9,9 @@ const DEFAULT_ALBUM = new Album('[untitled]', DEFAULT_ARTIST)
 
 export default class Track {
   constructor (
-    artist = DEFAULT_ARTIST,
-    album = DEFAULT_ALBUM,
     name = '[untitled]',
+    album = DEFAULT_ALBUM,
+    artist = DEFAULT_ARTIST,
     optional = {}
   ) {
     this.artist = artist

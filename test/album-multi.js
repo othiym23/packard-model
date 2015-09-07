@@ -60,12 +60,12 @@ test('multitrack album with track', function (t) {
     artist,
     {
       tracks: [new Track(
-        artist,
+        "Everybody Let's Booze Up and Riot",
         new MultitrackAlbum(
           'Skiffle Bloodbath',
           new Artist('The Beatles')
         ),
-        "Everybody Let's Booze Up and Riot",
+        artist,
         {
           path: '-',
           stats: {
@@ -103,12 +103,12 @@ test('multitrack album with tracks with dates', function (t) {
     {
       path: '/tmp/Gerry & The Pacemakers/Skiffle Bloodbath',
       tracks: [new Track(
-        artist,
+        "Everybody Let's Booze Up and Riot",
         new MultitrackAlbum(
           'Skiffle Bloodbath',
           new Artist('The Beatles')
         ),
-        "Everybody Let's Booze Up and Riot",
+        artist,
         {
           index: 1,
           date: '2014-11-04',
@@ -122,12 +122,12 @@ test('multitrack album with tracks with dates', function (t) {
         }
       ),
       new Track(
-        artist,
+        "Everybody Let's Booze Up and Riot [trance mix]",
         new MultitrackAlbum(
           'Skiffle Bloodbath',
           new Artist('The Beatles')
         ),
-        "Everybody Let's Booze Up and Riot [trance mix]",
+        artist,
         {
           index: 2,
           date: '2014-11-16',
@@ -171,9 +171,9 @@ test('multitrack album setting tracks after creation', function (t) {
   )
   album.tracks = [
     new Track(
-      artist,
-      album,
       "Everybody Let's Booze Up and Riot",
+      album,
+      artist,
       {
         date: '2014-11-04',
         path: '-',
@@ -186,9 +186,9 @@ test('multitrack album setting tracks after creation', function (t) {
       }
     ),
     new Track(
-      artist,
-      album,
       "Everybody Let's Booze Up and Riot [trance mix]",
+      album,
+      artist,
       {
         date: '2014-11-04',
         path: '-',

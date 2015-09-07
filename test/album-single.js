@@ -183,9 +183,9 @@ test('fromTrack works as expected', function (t) {
     { size: 14000 }
   )
   var from = SingletrackAlbum.fromTrack(new Track(
-    whoopsArtist,
-    album,
     'Skiffle Bloodbath.mp3',
+    album,
+    whoopsArtist,
     { file: file }
   ))
 
