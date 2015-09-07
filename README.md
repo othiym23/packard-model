@@ -27,13 +27,25 @@ Scrubs characters that aren't filesystem-safe from `name`. This list is probably
 The size of the file.
 - `blockSize`: Since the ultimate purpose of packard is to figure out how to get the most audio files onto a storage medium, it's helpful for it to be able to get the size of files in terms of the integer number of blocks the file will occupy on that particular medium. For the same reason, it rounds up.
 
-## Archive
-`Archive`s include one or more audio files and other associated assets. They also typically have metadata (tables of contents, internal block sizes, stream types) extracted from the files by e.g. compressed stream readers.
+## File > Cover
+A `Cover` is a picture associated with an album.
+
+Additional properties:
+- `format`: How the image is encoded. Right now, extracted at creation time from the file's extension.
+
+### new Cover(path, stats)
+Same as `File`, except without the `extension`, which Cover always calculates from the extension, and uses to set `format`.
+
+## File > Archive
+`Archive`s are `File`s that contain one or more audio files and other associated assets. They also typically have metadata (tables of contents, internal block sizes, stream types) extracted from the files by e.g. compressed stream readers.
+
+Additional properties:
+- `info`: Additional archive-related metadata.
 
 ### new Archive(path, stats[, info])
 Same as new File(), except an optional object literal containing metadata specific to `Archive` instead of the extension.
 
-## Cuesheet
+## File > Cuesheet
 A `Cuesheet` should eventually be able to produce a `MultitrackAlbum` from its own metadata, but for now, it's just a type of file ("type" being the key word, as the type of `Cuesheet` objects is used by the packard scanner).
 
 ### new Cuesheet(path, stats)
@@ -65,7 +77,7 @@ Returns `date`. Used by `album.toSafePath()`, so override this when subclassing 
 ### album.toSafePath()
 Return a filesystem-safe full path (including the artist name) for the album, including the date (if it's set).
 
-## SingletrackAlbum
+## Album > SingletrackAlbum
 A `SingletrackAlbum` is probably a continuous DJ mix or full-album rip of some kind. It may have associated cover art, and it may also have either an associated or embedded cue sheet with metadata about the set of tracks contained within the single file. It's meant to be tied to an `AudioFile`.
 
 Additional properties:
@@ -84,7 +96,7 @@ Produce a human-readable representation of the metadata associated with the albu
 ### SingletrackAlbum.fromTrack(track)
 A filesystem scanner will find and read data from a single-track album (potentially even parsing out its cuesheet). This is a utility method to turn that `Track` into a `SingletrackAlbum`, reusing the same underlying `AudioFile`. Because filesystem scanners presume an `Artist/Album/Track.type` hierarchy, the tracks representing single-track albums typically end up with the artist name in the album name's slot, so `.fromTrack()` fixes that up.
 
-## MultitrackAlbum
+## Album > MultitrackAlbum
 A `MultitrackAlbum` bundles a set of `Track`s into a single logical album, with associated cover art, and potentially source and destination paths for the archive from which the associated tracks were extracted.
 
 Additional properties:
