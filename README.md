@@ -3,53 +3,51 @@
 # @packard/model
 The entity types used by the packard audio file management suite. Model objects are for properties and business logic only; persistence logic lives in the DAOs, and workflows live in the packard scanner, cache, and CLI. These should stay pretty simple.
 
-## File
-`File` is meant to be used as a base for anything that lives on the file system and has filesystem metadata associated with it.
+## Track
+`Track`s are the most important type in the model. Everything that makes sounds has its metadata associated with a `Track`. As such, there's a lot of default behavior associated with `Tracks`, which is intended to make it easy to work with them.
 
 Properties:
-- `path`: Where the file is located.
-- `stats`: The results of a call to `fs.stat()`, or something that has enough of that info with the correct names to be useful. Currently, the only thing File itself needs is `size`.
-- `ext`: To simplify creating new files, or to do type discrimination on files that already exist. Defaults at creation time to `path.extname()` called on `path`.
-- `name`: The base name of the file, unless the `ext` passed to the constructor differs from the extension on `path`.
+- `name`: The track name.
+- `album`: The `Album` on which the track appears.
+- `artist`: The `Artist` who made the track.
+- `file`: The `AudioFile` containing the actual audio for the track.
+- `index`: The track index on the original album.
+- `disc`: On which disc (of a multi-disc set) the track appeared.
+- `date`: Release date for the track.
+- `duration`: Duration of the track, in seconds. Can include fractions of a second. _May eventually be replaced with a time type that can handle CDDA frames or other frame / sample lengths._
+- `flacTags`: Metadata tags from an Ogg Vorbis container for FLAC audio. _Will probably be generalized to audio file tags, or a dedicated class for abstracting away the various conventions for naming tags._
+- `musicbrainzTags`: Musicbrainz metadata. _Will probably be abstracted out into a parallel set of classes for MB metadata._
+- `sourceArchive`: The `Archive` that originally contained this `Track`.
+- `fsTrack`: Another `Track` populated with metadata derived from the name and location of the track on the filesystem.
+- `fsAlbum`: An `Album` populated with metadata derived from the name and location of the album on the filesystem.
+- `fsArtist`: An `Artist` populated with metadata derived from the name and location of the artist on the filesystem.
 
-### new File(path, stats[, extension])
-- `path`: Where the file is located.
-- `stats`: The results of a call to `fs.stat()`, or something that has enough of that info with the correct names to be useful. Currently, the only thing File itself needs is `size`.
-- `extension`: To simplify creating new files, or to do type discrimination on files that already exist.
+### new Track([name, album, artist, optional])
+- `name`: The track name. Defaults to '[untitled]'.
+- `album`: The album on which the track appears. Defaults to an album named '[untitled]'.
+- `artist`: The artist who made the track. Defaults to an artist named '[unknown]'.
+- `optional.file`: An object representing the underlying file.
+- `optional.path` and `optional.stats`: The elements necessary for the constructor to create the `AudioFile` for you. If you want to use this, both must be included.
+- `optional.ext`
+- `optional.index`: The track index on the original album. Defaults to 0.
+- `optional.disc`: On which disc (of a multi-disc set) the track appeared. Defaults to 0.
+- `optional.date`: Release date for the track.
+- `optional.duration`: Duration of the track, in seconds. Can include fractions of a second.
+- `optional.flacTags`: Metadata tags from an Ogg Vorbis container for FLAC audio.
+- `optional.musicbrainzTags`: Musicbrainz metadata.
+- `optional.sourceArchive`: The `Archive` that originally contained this `Track`.
+- `optional.fsTrack`: Another `Track` populated with metadata derived from the name and location of the track on the filesystem.
+- `optional.fsAlbum`: An `Album` populated with metadata derived from the name and location of the album on the filesystem.
+- `optional.fsArtist`: An `Artist` populated with metadata derived from the name and location of the artist on the filesystem.
 
-### file.fullName()
-`override` A file's `path`.
+### track.getSize()
+Return the total size, in blocks (with block size specified by `bs`), of the track.
 
-### file.safeName()
-Scrubs characters that aren't filesystem-safe from `name`. This list is probably more stringent than it needs to be for modern HFS+, NTFS, or ext[234], but FAT32 is pretty common for audio players, so err on the side of caution.
+### track.fullName()
+The canonical name format for the track, including (if set) the track number. _Should probably also include the disc number in there somewhere._
 
-### file.getSize(blockSize)
-The size of the file.
-- `blockSize`: Since the ultimate purpose of packard is to figure out how to get the most audio files onto a storage medium, it's helpful for it to be able to get the size of files in terms of the integer number of blocks the file will occupy on that particular medium. For the same reason, it rounds up.
-
-## File > Cover
-A `Cover` is a picture associated with an album.
-
-Additional properties:
-- `format`: How the image is encoded. Right now, extracted at creation time from the file's extension.
-
-### new Cover(path, stats)
-Same as `File`, except without the `extension`, which Cover always calculates from the extension, and uses to set `format`.
-
-## File > Archive
-`Archive`s are `File`s that contain one or more audio files and other associated assets. They also typically have metadata (tables of contents, internal block sizes, stream types) extracted from the files by e.g. compressed stream readers.
-
-Additional properties:
-- `info`: Additional archive-related metadata.
-
-### new Archive(path, stats[, info])
-Same as new File(), except an optional object literal containing metadata specific to `Archive` instead of the extension.
-
-## File > Cuesheet
-A `Cuesheet` should eventually be able to produce a `MultitrackAlbum` from its own metadata, but for now, it's just a type of file ("type" being the key word, as the type of `Cuesheet` objects is used by the packard scanner).
-
-### new Cuesheet(path, stats)
-Same as `new File()`, except the extension is _always_ deduced from the filename.
+### track.safeName()
+A filesystem-safe version of the track name.
 
 ## Album
 `Album` is meant to be used as an abstract basis for the two kinds of albums that can be found on a file system: collections of tracks, and single-track albums (for more on those, read on).
@@ -139,48 +137,50 @@ Concatenate a list of tracks with the existing list of other tracks, ensuring th
 ### artist.getSize(bs)
 Return the total size, in blocks (with block size specified by `bs`), of all the albums and tracks associated with the artist.
 
-## Track
-`Track`s are the most important type in the model. Everything that makes sounds has its metadata associated with a `Track`. As such, there's a lot of default behavior associated with `Tracks`, which is intended to make it easy to work with them.
+## File
+`File` is meant to be used as a base for anything that lives on the file system and has filesystem metadata associated with it.
 
 Properties:
-- `name`: The track name.
-- `album`: The `Album` on which the track appears.
-- `artist`: The `Artist` who made the track.
-- `file`: The `AudioFile` containing the actual audio for the track.
-- `index`: The track index on the original album.
-- `disc`: On which disc (of a multi-disc set) the track appeared.
-- `date`: Release date for the track.
-- `duration`: Duration of the track, in seconds. Can include fractions of a second. _May eventually be replaced with a time type that can handle CDDA frames or other frame / sample lengths._
-- `flacTags`: Metadata tags from an Ogg Vorbis container for FLAC audio. _Will probably be generalized to audio file tags, or a dedicated class for abstracting away the various conventions for naming tags._
-- `musicbrainzTags`: Musicbrainz metadata. _Will probably be abstracted out into a parallel set of classes for MB metadata._
-- `sourceArchive`: The `Archive` that originally contained this `Track`.
-- `fsTrack`: Another `Track` populated with metadata derived from the name and location of the track on the filesystem.
-- `fsAlbum`: An `Album` populated with metadata derived from the name and location of the album on the filesystem.
-- `fsArtist`: An `Artist` populated with metadata derived from the name and location of the artist on the filesystem.
+- `path`: Where the file is located.
+- `stats`: The results of a call to `fs.stat()`, or something that has enough of that info with the correct names to be useful. Currently, the only thing File itself needs is `size`.
+- `ext`: To simplify creating new files, or to do type discrimination on files that already exist. Defaults at creation time to `path.extname()` called on `path`.
+- `name`: The base name of the file, unless the `ext` passed to the constructor differs from the extension on `path`.
 
-### new Track([name, album, artist, optional])
-- `name`: The track name. Defaults to '[untitled]'.
-- `album`: The album on which the track appears. Defaults to an album named '[untitled]'.
-- `artist`: The artist who made the track. Defaults to an artist named '[unknown]'.
-- `optional.file`: An object representing the underlying file.
-- `optional.path` and `optional.stats`: The elements necessary for the constructor to create the `AudioFile` for you. If you want to use this, both must be included.
-- `optional.ext`
-- `optional.index`: The track index on the original album. Defaults to 0.
-- `optional.disc`: On which disc (of a multi-disc set) the track appeared. Defaults to 0.
-- `optional.date`: Release date for the track.
-- `optional.duration`: Duration of the track, in seconds. Can include fractions of a second.
-- `optional.flacTags`: Metadata tags from an Ogg Vorbis container for FLAC audio.
-- `optional.musicbrainzTags`: Musicbrainz metadata.
-- `optional.sourceArchive`: The `Archive` that originally contained this `Track`.
-- `optional.fsTrack`: Another `Track` populated with metadata derived from the name and location of the track on the filesystem.
-- `optional.fsAlbum`: An `Album` populated with metadata derived from the name and location of the album on the filesystem.
-- `optional.fsArtist`: An `Artist` populated with metadata derived from the name and location of the artist on the filesystem.
+### new File(path, stats[, extension])
+- `path`: Where the file is located.
+- `stats`: The results of a call to `fs.stat()`, or something that has enough of that info with the correct names to be useful. Currently, the only thing File itself needs is `size`.
+- `extension`: To simplify creating new files, or to do type discrimination on files that already exist.
 
-### track.getSize()
-Return the total size, in blocks (with block size specified by `bs`), of the track.
+### file.fullName()
+`override` A file's `path`.
 
-### track.fullName()
-The canonical name format for the track, including (if set) the track number. _Should probably also include the disc number in there somewhere._
+### file.safeName()
+Scrubs characters that aren't filesystem-safe from `name`. This list is probably more stringent than it needs to be for modern HFS+, NTFS, or ext[234], but FAT32 is pretty common for audio players, so err on the side of caution.
 
-### track.safeName()
-A filesystem-safe version of the track name.
+### file.getSize(blockSize)
+The size of the file.
+- `blockSize`: Since the ultimate purpose of packard is to figure out how to get the most audio files onto a storage medium, it's helpful for it to be able to get the size of files in terms of the integer number of blocks the file will occupy on that particular medium. For the same reason, it rounds up.
+
+## File > Cover
+A `Cover` is a picture associated with an album.
+
+Additional properties:
+- `format`: How the image is encoded. Right now, extracted at creation time from the file's extension.
+
+### new Cover(path, stats)
+Same as `File`, except without the `extension`, which Cover always calculates from the extension, and uses to set `format`.
+
+## File > Archive
+`Archive`s are `File`s that contain one or more audio files and other associated assets. They also typically have metadata (tables of contents, internal block sizes, stream types) extracted from the files by e.g. compressed stream readers.
+
+Additional properties:
+- `info`: Additional archive-related metadata.
+
+### new Archive(path, stats[, info])
+Same as new File(), except an optional object literal containing metadata specific to `Archive` instead of the extension.
+
+## File > Cuesheet
+A `Cuesheet` should eventually be able to produce a `MultitrackAlbum` from its own metadata, but for now, it's just a type of file ("type" being the key word, as the type of `Cuesheet` objects is used by the packard scanner).
+
+### new Cuesheet(path, stats)
+Same as `new File()`, except the extension is _always_ deduced from the filename.
