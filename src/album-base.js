@@ -1,19 +1,36 @@
-var assert = require('assert')
+import assert from 'assert'
+import { join } from 'path'
 
 export default class Album {
   constructor (name, artist, optional = {}) {
-    assert(name, 'must include an album name')
-    assert(artist, 'must include an artist name')
+    assert(name, 'must pass an album name')
+    assert(artist && artist.name, 'must pass an artist with a name')
 
     this.name = name
     this.artist = artist
     this.path = optional.path || ''
+    this.date = optional.date || null
     this.pictures = optional.pictures || []
-    // might be coming from cue sheet
-    this.tracks = optional.tracks || []
   }
 
-  getSize () {
-    return 0
+  getSize () { return 0 }
+
+  getDate () { return this.date }
+
+  toSafePath () {
+    let name = ''
+
+    const date = this.getDate()
+    if (date) name += '[' + date + '] '
+
+    name += this.name
+    return join(
+      this._safe(this.artist.name),
+      this._safe(name)
+    )
+  }
+
+  _safe (string) {
+    return ('' + (string || '')).replace(/[^ \]\[A-Za-z0-9-]/g, '')
   }
 }

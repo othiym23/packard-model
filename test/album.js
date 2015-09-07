@@ -1,101 +1,90 @@
 var test = require('tap').test
 
 var models = require('../')
+var Album = models.Album
 var Artist = models.Artist
-var BaseAlbum = models.Album
 var Cover = models.Cover
-var MultitrackAlbum = models.MultitrackAlbum
-var Track = models.Track
 
 test('base album missing information', function (t) {
   var album
+  var artist = new Artist('Test Artist')
 
   t.throws(function () {
-    album = new BaseAlbum(undefined, 'Test Artist')
+    album = new Album('Test Name')
+  }, "can't create new album without an artist")
+
+  t.throws(function () {
+    album = new Album('Test Name', 'Test Artist')
+  }, "can't create new album without an artist that's an object")
+
+  t.throws(function () {
+    album = new Album('Test Name', {})
+  }, "can't create new album without a named artist")
+
+  t.throws(function () {
+    album = new Album(undefined, artist)
   }, "can't create new album without a name")
 
   t.throws(function () {
-    album = new BaseAlbum('Test Name')
-  }, "can't create new album without an artist name")
+    album = Album('Test Name', artist)
+  }, "can't invoke Album as a plain function")
 
   t.notOk(album, "album doesn't get set because of failures")
 
   t.end()
 })
 
-test('multitrack album base case', function (t) {
-  var artist = new Artist('Gerry & The Pacemakers')
-  var album = new MultitrackAlbum('Skiffle Bloodbath', artist)
-  t.equal(album.getSize(), 0, 'nothing to a new album')
-  t.equal(
-    album.toPath(),
-    'Gerry  The Pacemakers/Skiffle Bloodbath',
-    'empty album still has a title'
-  )
-  t.equal(
-    album.dump(),
-    'Gerry  The Pacemakers/Skiffle Bloodbath/\n',
-    'simple album dump includes new path and original path (if set)'
-  )
+test('simplest base case', function (t) {
+  var al = new Album('"Flaunt It!"', new Artist('Sigue Sigue Sputnik'))
+
+  t.equal(al.name, '"Flaunt It!"')
+  t.ok(al.artist)
+  t.equal(al.artist.name, 'Sigue Sigue Sputnik')
+  t.notOk(al.path)
+  t.notOk(al.date)
+  t.equal(al.pictures.length, 0)
+
+  t.equal(al.getSize(), 0, 'abstract albums always have a size of 0')
+  t.notOk(al.getDate())
+  t.equal(al.toSafePath(), 'Sigue Sigue Sputnik/Flaunt It')
 
   t.end()
 })
 
-test('multitrack album with tracks', function (t) {
-  var artist = new Artist('Gerry & The Pacemakers')
-  var album = new MultitrackAlbum(
-    'Skiffle Bloodbath',
-    artist,
-    undefined,
-    [new Track(
-      artist,
-      new MultitrackAlbum(
-        'Skiffle Bloodbath',
-        new Artist('The Beatles')
-      ),
-      "Everybody Let's Booze Up and Riot",
-      {
-        path: '-',
-        stats: {
-          size: 1,
-          blockSize: 512,
-          blocks: 1
-        }
-      }
-    )]
+test('complete album example', function (t) {
+  var al = new Album(
+    '"Flaunt It!"',
+    new Artist('Sigue Sigue Sputnik'),
+    {
+      path: '/tmp/Sigue Sigue Sputnik - Flaunt It',
+      date: '1986',
+      pictures: [new Cover(
+        '/tmp/Sigue Sigue Sputnik - Flaunt It/cover.jpeg',
+        { size: 32768 }
+      )]
+    }
   )
-  t.equal(album.getSize(), 1, 'only tracks adding size to new album')
-  t.equal(
-    album.toPath(),
-    'Gerry  The Pacemakers/Skiffle Bloodbath',
-    'empty album still has a title'
-  )
-  t.equal(
-    album.dump(),
-    'Gerry  The Pacemakers/Skiffle Bloodbath/\n' +
-      '   Gerry  The Pacemakers - Skiffle Bloodbath - Everybody Lets Booze Up and Riot.unknown\n',
-    'album dump includes tracks'
-  )
+
+  t.equal(al.name, '"Flaunt It!"')
+  t.ok(al.artist)
+  t.equal(al.artist.name, 'Sigue Sigue Sputnik')
+  t.equal(al.path, '/tmp/Sigue Sigue Sputnik - Flaunt It')
+  t.equal(al.date, '1986')
+  t.equal(al.pictures.length, 1)
+  t.equal(al.pictures[0].path, '/tmp/Sigue Sigue Sputnik - Flaunt It/cover.jpeg')
+
+  t.equal(al.getSize(), 0, 'abstract albums always have a size of 0')
+  t.equal(al.getDate(), '1986', 'default date function returns passed date')
+  t.equal(al.toSafePath(), 'Sigue Sigue Sputnik/[1986] Flaunt It')
 
   t.end()
 })
 
-test('multitrack album with cover', function (t) {
-  var artist = new Artist('Gerry & The Pacemakers')
-  var album = new MultitrackAlbum('Skiffle Bloodbath', artist)
-  album.pictures.push(new Cover('cover.jpg', {size: 513, blockSize: 512, blocks: 1}))
-  t.equal(album.getSize(), 513, 'only cover size to new album')
-  t.equal(
-    album.toPath(),
-    'Gerry  The Pacemakers/Skiffle Bloodbath',
-    'empty album still has a title'
-  )
-  t.equal(
-    album.dump(),
-    'Gerry  The Pacemakers/Skiffle Bloodbath/\n' +
-      'c: Gerry  The Pacemakers/Skiffle Bloodbath/cover.jpg\n',
-    'simple album dump includes new path and original path (if set)'
-  )
-
+test('_safe is safe', function (t) {
+  var al = new Album('"Flaunt It!"', new Artist('Sigue Sigue Sputnik'))
+  t.equal(al._safe(null), '')
+  t.equal(al._safe(undefined), '')
+  t.equal(al._safe(''), '')
+  t.equal(al._safe(8), '8')
   t.end()
 })

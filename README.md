@@ -6,7 +6,7 @@ The models used by the packard audio file management suite. Model objects are fo
 ## File
 `File` is meant to be used as a base for anything that lives on the file system and has filesystem metadata associated with it.
 
-Core properties:
+Properties:
 - `path`: Where the file is located.
 - `stats`: The results of a call to `fs.stat()`, or something that has enough of that info with the correct names to be useful. Currently, the only thing File itself needs is `size`.
 - `ext`: To simplify creating new files, or to do type discrimination on files that already exist. Defaults at creation time to `path.extname()` called on `path`.
@@ -38,3 +38,69 @@ A `Cuesheet` should eventually be able to produce a `MultitrackAlbum` from its o
 
 ### new Cuesheet(path, stats)
 Same as `new File()`, except the extension is _always_ deduced from the filename.
+
+## Album
+`Album` is meant to be used as an abstract basis for the two kinds of albums that can be found on a file system: collections of tracks, and single-track albums (for more on those, read on).
+
+Properties:
+- `name`: The name of the album.
+- `artist`: An object representing the album artist. For now, the only property of the artist that the Album cares about is its `name`.
+- `path`: The directory or file containing the album. Defaults to the empty string.
+- `date`: The album's release date. Defaults to `null`.
+- `pictures`: Any images associated with the album (probably `Cover`s).
+
+### new Album(name, artist[, optional])
+- `name`: The name of the album.
+- `artist`: An object representing the album artist. For now, the only property of the artist that the Album cares about is its `name`.
+- `optional.path`: The directory or file containing the album.
+- `optional.date`: The album's release date.
+- `optional.pictures`: Any images associated with the album.
+
+### album.getSize()
+Always returns 0. Abstract albums take up no space.
+
+### album.getDate()
+Returns `date`. Used by `album.toSafePath()`, so override this when subclassing `Album` if there's a different way to figure out the album date (for an example, see `MultitrackAlbum`).
+
+### album.toSafePath()
+Return a filesystem-safe full path (including the artist name) for the album, including the date (if it's set).
+
+## SingletrackAlbum
+A `SingletrackAlbum` is probably a continuous DJ mix or full-album rip of some kind. It may have associated cover art, and it may also have either an associated or embedded cue sheet with metadata about the set of tracks contained within the single file. It's meant to be tied to an `AudioFile`.
+
+Additional properties:
+- `file`: The physical `AudioFile` associated with this logical album.
+- `cuesheet`: A `Cuesheet`.
+
+### SingletrackAlbum(name, artist[, optional])
+Same as `new Album()`, but with these additional properties:
+- `optional.file`: An object representing the underlying file.
+- `optional.path` and `optional.stats`: The elements necessary for the constructor to create the `AudioFile` for you. If you want to use this, both must be included.
+- `optional.cuesheet`: A `Cuesheet`.
+
+### singletrack.dump()
+Produce a human-readable representation of the metadata associated with the album.
+
+### SingletrackAlbum.fromTrack(track)
+A filesystem scanner will find and read data from a single-track album (potentially even parsing out its cuesheet). This is a utility method to turn that `Track` into a `SingletrackAlbum`, reusing the same underlying `AudioFile`. Because filesystem scanners presume an `Artist/Album/Track.type` hierarchy, the tracks representing single-track albums typically end up with the artist name in the album name's slot, so `.fromTrack()` fixes that up.
+
+## MultitrackAlbum
+A `MultitrackAlbum` bundles a set of `Track`s into a single logical album, with associated cover art, and potentially source and destination paths for the archive from which the associated tracks were extracted.
+
+Additional properties:
+- `tracks`: A list of `Track`s, sorted by index and name.
+- `sourceArchive`: The original location of the archive from which the `Tracks` comprising the album were extracted.
+- `destArchive`: The location to which the archive should be moved.
+
+### MultitrackAlbum(name, artist[, optional])
+Same as `new Album()`, but with these additional properties:
+- `optional.tracks`: An array of `Track`s.
+
+### multitrack.getSize(bs)
+Return the total size, in blocks (with block size specified by `bs`), of all of the tracks and pictures associated with the album.
+
+### multitrack.getDate()
+Builds a set from all of the dates found on `Tracks` for this release. Warns if more than one date is found, and then chooses one of them arbitrarily.
+
+### multitrack.dump()
+Produce a human-readable representation of the metadata associated with the album.
