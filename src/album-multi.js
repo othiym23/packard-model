@@ -1,5 +1,5 @@
 // oh iterables
-import 'babel/polyfill'
+import 'babel-polyfill'
 
 import { join, basename } from 'path'
 
