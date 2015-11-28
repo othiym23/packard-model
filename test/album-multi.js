@@ -162,6 +162,77 @@ test('multitrack album with tracks with dates', function (t) {
   t.end()
 })
 
+test('multi-disc album', function (t) {
+  var artist = new Artist('Gerry & The Pacemakers')
+  var album = new MultitrackAlbum(
+    'Skiffle Bloodbath',
+    artist,
+    {
+      path: '/tmp/Gerry & The Pacemakers/Skiffle Bloodbath',
+      tracks: [new Track(
+        "Everybody Let's Booze Up and Riot",
+        new MultitrackAlbum(
+          'Skiffle Bloodbath',
+          new Artist('The Beatles')
+        ),
+        artist,
+        {
+          index: 1,
+          path: '-',
+          ext: '.mp3',
+          flacTags: {
+            DISCNUMBER: 1
+          },
+          stats: {
+            size: 1,
+            blockSize: 512,
+            blocks: 1
+          }
+        }
+      ),
+      new Track(
+        "Everybody Let's Booze Up and Riot [trance mix]",
+        new MultitrackAlbum(
+          'Skiffle Bloodbath',
+          new Artist('The Beatles')
+        ),
+        artist,
+        {
+          index: 1,
+          date: '2014-11-16',
+          path: '-',
+          ext: '.mp3',
+          flacTags: {
+            DISCNUMBER: 2
+          },
+          stats: {
+            size: 1,
+            blockSize: 512,
+            blocks: 1
+          }
+        }
+      )]
+    }
+  )
+  t.equal(album.getSize(), 2, 'only tracks adding size to new album')
+  t.equal(album.path, '/tmp/Gerry & The Pacemakers/Skiffle Bloodbath')
+  t.equal(
+    album.toSafePath(),
+    'Gerry  The Pacemakers/Skiffle Bloodbath'
+  )
+  t.equal(
+    album.dump(),
+    'Gerry  The Pacemakers/Skiffle Bloodbath/\n' +
+      '   Gerry  The Pacemakers - Skiffle Bloodbath - 01 - Everybody Lets Booze Up and Riot.mp3\n' +
+      '   Gerry  The Pacemakers - Skiffle Bloodbath - 01 - Everybody Lets Booze Up and Riot [trance mix].mp3\n' +
+      '(unpacked to /tmp/Gerry & The Pacemakers/Skiffle Bloodbath)\n',
+    'album dump includes tracks'
+  )
+  t.equal(album.getSize(512), 2, 'occupies 2 blocks even though each track is only 1 byte')
+
+  t.end()
+})
+
 test('multitrack album setting tracks after creation', function (t) {
   var artist = new Artist('Gerry & The Pacemakers')
   var album = new MultitrackAlbum(

@@ -17,7 +17,11 @@ export default class MultitrackAlbum extends Album {
   }
 
   get tracks () {
-    return this._tracks.sort((a, b) => (a.index || 0) - (b.index || 0))
+    return this._tracks.sort((a, b) => {
+      let c = (a && a.flacTags && a.flacTags.DISCNUMBER || 0) -
+              (b && b.flacTags && b.flacTags.DISCNUMBER || 0)
+      return (c !== 0) ? c : (a.index || 0) - (b.index || 0)
+    })
   }
 
   set tracks (tracks) {
@@ -40,10 +44,7 @@ export default class MultitrackAlbum extends Album {
 
   dump () {
     let dumped = this.toSafePath() + '/\n'
-    for (let track of this.tracks.sort((a, b) => (a.index || 0) - (b.index || 0))) {
-      dumped += '   ' + track.safeName() + '\n'
-    }
-
+    for (let track of this.tracks) dumped += '   ' + track.safeName() + '\n'
     for (let cover of this.pictures) {
       dumped += 'c: ' + join(this.toSafePath(), basename(cover.path)) + '\n'
     }
