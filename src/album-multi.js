@@ -18,8 +18,8 @@ export default class MultitrackAlbum extends Album {
 
   get tracks () {
     return this._tracks.sort((a, b) => {
-      let c = (a && a.flacTags && a.flacTags.DISCNUMBER || 0) -
-              (b && b.flacTags && b.flacTags.DISCNUMBER || 0)
+      let c = (a && a.tags && a.tags.disc || 0) -
+              (b && b.tags && b.tags.disc || 0)
       return (c !== 0) ? c : (a.index || 0) - (b.index || 0)
     })
   }

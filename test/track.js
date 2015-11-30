@@ -83,12 +83,12 @@ test('other data', function (t) {
       file: new AudioFile('/tmp/track.flac', { size: 1234 }),
       index: 1,
       disc: 1,
-      flacTags: {
-        INDEX: 1,
-        DISC: 1,
-        TRACK: 'FLACTrack',
-        ARTIST: 'FLACArtist',
-        ALBUM: 'FLACAlbum'
+      tags: {
+        index: 1,
+        disc: 1,
+        title: 'FLACTrack',
+        artist: 'FLACArtist',
+        album: 'FLACAlbum'
       }
     }
   )

@@ -35,10 +35,13 @@ export default class Track {
     this.date = optional.date
     this.duration = optional.duration
 
-    if (Object.keys(optional.flacTags || {}).length > 0) {
-      this.flacTags = optional.flacTags
+    if (Object.keys(optional.tags || {}).length > 0) {
+      this.tags = optional.tags
+      if (this.tags.index) this.index = parseInt(this.tags.index, 10)
+      if (this.tags.disc) this.disc = parseInt(this.tags.disc, 10)
+      if (this.tags.date) this.date = this.tags.date
     } else {
-      this.flacTags = null
+      this.tags = null
     }
 
     if (Object.keys(optional.musicbrainzTags || {}).length > 0) {

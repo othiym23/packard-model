@@ -180,8 +180,8 @@ test('multi-disc album', function (t) {
           index: 1,
           path: '-',
           ext: '.mp3',
-          flacTags: {
-            DISCNUMBER: 1
+          tags: {
+            disc: 1
           },
           stats: {
             size: 1,
@@ -202,8 +202,8 @@ test('multi-disc album', function (t) {
           date: '2014-11-16',
           path: '-',
           ext: '.mp3',
-          flacTags: {
-            DISCNUMBER: 2
+          tags: {
+            disc: 2
           },
           stats: {
             size: 1,
