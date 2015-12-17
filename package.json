@@ -42,6 +42,7 @@
   "dependencies": {
     "babel-polyfill": "^6.1.19",
     "npmlog": "^2.0.0",
+    "sanitize-filename": "^1.5.3",
     "sprintf": "^0.1.5"
   }
 }

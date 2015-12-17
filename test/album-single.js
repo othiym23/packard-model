@@ -42,12 +42,12 @@ test('single-track album with no file', function (t) {
   t.equal(album.getSize(), 0, 'nothing to a new album')
   t.equal(
     album.toSafePath(),
-    'Gerry  The Pacemakers/Gerry  The Pacemakers - Skiffle Bloodbath',
+    'Gerry & The Pacemakers/Gerry & The Pacemakers - Skiffle Bloodbath',
     'empty album still has a title'
   )
   t.equal(
     album.dump(),
-    'Gerry  The Pacemakers/Gerry  The Pacemakers - Skiffle Bloodbath\n',
+    'Gerry & The Pacemakers/Gerry & The Pacemakers - Skiffle Bloodbath\n',
     'simple album dump includes new path and original path (if set)'
   )
 
@@ -66,11 +66,11 @@ test('single-track album with a file', function (t) {
   t.equal(album.path, '/tmp/Gerry & The Pacemakers - Skiffle Bloodbath.mp3')
   t.equal(
     album.toSafePath(),
-    'Gerry  The Pacemakers/Gerry  The Pacemakers - Skiffle Bloodbath.mp3'
+    'Gerry & The Pacemakers/Gerry & The Pacemakers - Skiffle Bloodbath.mp3'
   )
   t.equal(
     album.dump(),
-    'Gerry  The Pacemakers/Gerry  The Pacemakers - Skiffle Bloodbath.mp3\n' +
+    'Gerry & The Pacemakers/Gerry & The Pacemakers - Skiffle Bloodbath.mp3\n' +
       '(currently at /tmp/Gerry & The Pacemakers - Skiffle Bloodbath.mp3)\n',
     'simple album dump includes new path and original path (if set)'
   )
@@ -96,11 +96,11 @@ test('single-track album with path and stats', function (t) {
   t.equal(album.path, '/tmp/a', 'can change path on associated file')
   t.equal(
     album.toSafePath(),
-    'Gerry  The Pacemakers/Gerry  The Pacemakers - Skiffle Bloodbath.mp3'
+    'Gerry & The Pacemakers/Gerry & The Pacemakers - Skiffle Bloodbath.mp3'
   )
   t.equal(
     album.dump(),
-    'Gerry  The Pacemakers/Gerry  The Pacemakers - Skiffle Bloodbath.mp3\n' +
+    'Gerry & The Pacemakers/Gerry & The Pacemakers - Skiffle Bloodbath.mp3\n' +
       '(currently at /tmp/a)\n',
     'simple album dump includes new path and original path (if set)'
   )
@@ -124,12 +124,12 @@ test('single-track album with path and date but no stats', function (t) {
   t.notOk(album.file, 'files need path and stats')
   t.equal(
     album.toSafePath(),
-    'Gerry  The Pacemakers/Gerry  The Pacemakers - [1963-07-01] Skiffle Bloodbath',
+    'Gerry & The Pacemakers/Gerry & The Pacemakers - [1963-07-01] Skiffle Bloodbath',
     'single-track albums really want to be associated with a file'
   )
   t.equal(
     album.dump(),
-    'Gerry  The Pacemakers/Gerry  The Pacemakers - [1963-07-01] Skiffle Bloodbath\n',
+    'Gerry & The Pacemakers/Gerry & The Pacemakers - [1963-07-01] Skiffle Bloodbath\n',
     'simple album dump includes safe path'
   )
 
@@ -160,12 +160,12 @@ test('single-track album with a file and a cover', function (t) {
   t.equal(album.pictures.length, 1)
   t.equal(
     album.toSafePath(),
-    'Gerry  The Pacemakers/Gerry  The Pacemakers - Skiffle Bloodbath.mp3'
+    'Gerry & The Pacemakers/Gerry & The Pacemakers - Skiffle Bloodbath.mp3'
   )
   t.equal(
     album.dump(),
-    'Gerry  The Pacemakers/Gerry  The Pacemakers - Skiffle Bloodbath.mp3\n' +
-      'c: Gerry  The Pacemakers/Gerry & The Pacemakers - Skiffle Bloodbath.png\n' +
+    'Gerry & The Pacemakers/Gerry & The Pacemakers - Skiffle Bloodbath.mp3\n' +
+      'c: Gerry & The Pacemakers/Gerry & The Pacemakers - Skiffle Bloodbath.png\n' +
       '(currently at /tmp/Gerry & The Pacemakers - Skiffle Bloodbath.mp3)\n',
     'simple album dump includes new path and original path (if set)'
   )
@@ -195,11 +195,11 @@ test('fromTrack works as expected', function (t) {
   t.equal(from.path, '/tmp/Gerry & The Pacemakers/Skiffle Bloodbath.mp3')
   t.equal(
     from.toSafePath(),
-    'Gerry  The Pacemakers/Gerry  The Pacemakers - Skiffle Bloodbath.mp3'
+    'Gerry & The Pacemakers/Gerry & The Pacemakers - Skiffle Bloodbath.mp3'
   )
   t.equal(
     from.dump(),
-    'Gerry  The Pacemakers/Gerry  The Pacemakers - Skiffle Bloodbath.mp3\n' +
+    'Gerry & The Pacemakers/Gerry & The Pacemakers - Skiffle Bloodbath.mp3\n' +
       '(currently at /tmp/Gerry & The Pacemakers/Skiffle Bloodbath.mp3)\n',
     'simple album dump includes new path and original path (if set)'
   )

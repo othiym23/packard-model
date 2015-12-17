@@ -41,12 +41,12 @@ test('multitrack album base case', function (t) {
   t.equal(album.getSize(), 0, 'nothing to a new album')
   t.equal(
     album.toSafePath(),
-    'Gerry  The Pacemakers/Skiffle Bloodbath',
+    'Gerry & The Pacemakers/Skiffle Bloodbath',
     'empty album still has a title'
   )
   t.equal(
     album.dump(),
-    'Gerry  The Pacemakers/Skiffle Bloodbath/\n',
+    'Gerry & The Pacemakers/Skiffle Bloodbath/\n',
     'simple album dump includes new path and original path (if set)'
   )
 
@@ -81,13 +81,13 @@ test('multitrack album with track', function (t) {
   t.notOk(album.path)
   t.equal(
     album.toSafePath(),
-    'Gerry  The Pacemakers/Skiffle Bloodbath',
+    'Gerry & The Pacemakers/Skiffle Bloodbath',
     'empty album still has a title'
   )
   t.equal(
     album.dump(),
-    'Gerry  The Pacemakers/Skiffle Bloodbath/\n' +
-      '   Gerry  The Pacemakers - Skiffle Bloodbath - Everybody Lets Booze Up and Riot.unknown\n',
+    'Gerry & The Pacemakers/Skiffle Bloodbath/\n' +
+      '   Gerry & The Pacemakers - Skiffle Bloodbath - Everybody Let\'s Booze Up and Riot.unknown\n',
     'album dump includes tracks'
   )
   t.equal(album.getSize(), 1, 'still occupies 1 block even though only 1 byte long')
@@ -146,14 +146,14 @@ test('multitrack album with tracks with dates', function (t) {
   t.equal(album.path, '/tmp/Gerry & The Pacemakers/Skiffle Bloodbath')
   t.equal(
     album.toSafePath(),
-    'Gerry  The Pacemakers/[2014-11-04] Skiffle Bloodbath',
+    'Gerry & The Pacemakers/[2014-11-04] Skiffle Bloodbath',
     'empty album still has a title'
   )
   t.equal(
     album.dump(),
-    'Gerry  The Pacemakers/[2014-11-04] Skiffle Bloodbath/\n' +
-      '   01 - Gerry  The Pacemakers - Skiffle Bloodbath - Everybody Lets Booze Up and Riot.mp3\n' +
-      '   02 - Gerry  The Pacemakers - Skiffle Bloodbath - Everybody Lets Booze Up and Riot [trance mix].mp3\n' +
+    'Gerry & The Pacemakers/[2014-11-04] Skiffle Bloodbath/\n' +
+      '   01 - Gerry & The Pacemakers - Skiffle Bloodbath - Everybody Let\'s Booze Up and Riot.mp3\n' +
+      '   02 - Gerry & The Pacemakers - Skiffle Bloodbath - Everybody Let\'s Booze Up and Riot [trance mix].mp3\n' +
       '(unpacked to /tmp/Gerry & The Pacemakers/Skiffle Bloodbath)\n',
     'album dump includes tracks'
   )
@@ -218,13 +218,13 @@ test('multi-disc album', function (t) {
   t.equal(album.path, '/tmp/Gerry & The Pacemakers/Skiffle Bloodbath')
   t.equal(
     album.toSafePath(),
-    'Gerry  The Pacemakers/Skiffle Bloodbath'
+    'Gerry & The Pacemakers/Skiffle Bloodbath'
   )
   t.equal(
     album.dump(),
-    'Gerry  The Pacemakers/Skiffle Bloodbath/\n' +
-      '   01.01 - Gerry  The Pacemakers - Skiffle Bloodbath - Everybody Lets Booze Up and Riot.mp3\n' +
-      '   02.01 - Gerry  The Pacemakers - Skiffle Bloodbath - Everybody Lets Booze Up and Riot [trance mix].mp3\n' +
+    'Gerry & The Pacemakers/Skiffle Bloodbath/\n' +
+      '   01.01 - Gerry & The Pacemakers - Skiffle Bloodbath - Everybody Let\'s Booze Up and Riot.mp3\n' +
+      '   02.01 - Gerry & The Pacemakers - Skiffle Bloodbath - Everybody Let\'s Booze Up and Riot [trance mix].mp3\n' +
       '(unpacked to /tmp/Gerry & The Pacemakers/Skiffle Bloodbath)\n',
     'album dump includes tracks'
   )
@@ -276,14 +276,14 @@ test('multitrack album setting tracks after creation', function (t) {
   t.equal(album.path, '/tmp/Gerry & The Pacemakers/Skiffle Bloodbath')
   t.equal(
     album.toSafePath(),
-    'Gerry  The Pacemakers/[2014-11-04] Skiffle Bloodbath',
+    'Gerry & The Pacemakers/[2014-11-04] Skiffle Bloodbath',
     'empty album still has a title'
   )
   t.equal(
     album.dump(),
-    'Gerry  The Pacemakers/[2014-11-04] Skiffle Bloodbath/\n' +
-      '   Gerry  The Pacemakers - Skiffle Bloodbath - Everybody Lets Booze Up and Riot.mp3\n' +
-      '   Gerry  The Pacemakers - Skiffle Bloodbath - Everybody Lets Booze Up and Riot [trance mix].mp3\n' +
+    'Gerry & The Pacemakers/[2014-11-04] Skiffle Bloodbath/\n' +
+      '   Gerry & The Pacemakers - Skiffle Bloodbath - Everybody Let\'s Booze Up and Riot.mp3\n' +
+      '   Gerry & The Pacemakers - Skiffle Bloodbath - Everybody Let\'s Booze Up and Riot [trance mix].mp3\n' +
       '(unpacked to /tmp/Gerry & The Pacemakers/Skiffle Bloodbath)\n',
     'album dump includes tracks'
   )
@@ -299,13 +299,13 @@ test('multitrack album with cover', function (t) {
   t.equal(album.getSize(), 513, 'only cover size to new album')
   t.equal(
     album.toSafePath(),
-    'Gerry  The Pacemakers/Skiffle Bloodbath',
+    'Gerry & The Pacemakers/Skiffle Bloodbath',
     'empty album still has a title'
   )
   t.equal(
     album.dump(),
-    'Gerry  The Pacemakers/Skiffle Bloodbath/\n' +
-      'c: Gerry  The Pacemakers/Skiffle Bloodbath/cover.jpg\n',
+    'Gerry & The Pacemakers/Skiffle Bloodbath/\n' +
+      'c: Gerry & The Pacemakers/Skiffle Bloodbath/cover.jpg\n',
     'simple album dump includes new path and original path (if set)'
   )
 

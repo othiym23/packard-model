@@ -1,3 +1,4 @@
+import sanitize from 'sanitize-filename'
 import sprintf from 'sprintf'
 
 import Album from './album-base.js'
@@ -61,7 +62,7 @@ export default class Track {
   }
 
   safeName () {
-    return this.fullName().replace(/[^ ()\]\[A-Za-z0-9.-]/g, '')
+    return sanitize(this.fullName())
   }
 
   fullName () {

@@ -46,7 +46,7 @@ test('simplest base case', function (t) {
 
   t.equal(al.getSize(), 0, 'abstract albums always have a size of 0')
   t.notOk(al.getDate())
-  t.equal(al.toSafePath(), 'Sigue Sigue Sputnik/Flaunt It')
+  t.equal(al.toSafePath(), 'Sigue Sigue Sputnik/Flaunt It!')
 
   t.end()
 })
@@ -75,16 +75,7 @@ test('complete album example', function (t) {
 
   t.equal(al.getSize(), 0, 'abstract albums always have a size of 0')
   t.equal(al.getDate(), '1986', 'default date function returns passed date')
-  t.equal(al.toSafePath(), 'Sigue Sigue Sputnik/[1986] Flaunt It')
+  t.equal(al.toSafePath(), 'Sigue Sigue Sputnik/[1986] Flaunt It!')
 
-  t.end()
-})
-
-test('_safe is safe', function (t) {
-  var al = new Album('"Flaunt It!"', new Artist('Sigue Sigue Sputnik'))
-  t.equal(al._safe(null), '')
-  t.equal(al._safe(undefined), '')
-  t.equal(al._safe(''), '')
-  t.equal(al._safe(8), '8')
   t.end()
 })

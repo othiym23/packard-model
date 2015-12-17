@@ -1,4 +1,5 @@
 import assert from 'assert'
+import sanitize from 'sanitize-filename'
 import { join } from 'path'
 
 export default class Album {
@@ -25,12 +26,8 @@ export default class Album {
 
     name += this.name
     return join(
-      this._safe(this.artist.name),
-      this._safe(name)
+      sanitize(this.artist.name),
+      sanitize(name)
     )
-  }
-
-  _safe (string) {
-    return ('' + (string || '')).replace(/[^ \]\[A-Za-z0-9-]/g, '')
   }
 }
