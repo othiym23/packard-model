@@ -152,8 +152,8 @@ test('multitrack album with tracks with dates', function (t) {
   t.equal(
     album.dump(),
     'Gerry  The Pacemakers/[2014-11-04] Skiffle Bloodbath/\n' +
-      '   Gerry  The Pacemakers - Skiffle Bloodbath - 01 - Everybody Lets Booze Up and Riot.mp3\n' +
-      '   Gerry  The Pacemakers - Skiffle Bloodbath - 02 - Everybody Lets Booze Up and Riot [trance mix].mp3\n' +
+      '   01 - Gerry  The Pacemakers - Skiffle Bloodbath - Everybody Lets Booze Up and Riot.mp3\n' +
+      '   02 - Gerry  The Pacemakers - Skiffle Bloodbath - Everybody Lets Booze Up and Riot [trance mix].mp3\n' +
       '(unpacked to /tmp/Gerry & The Pacemakers/Skiffle Bloodbath)\n',
     'album dump includes tracks'
   )
@@ -223,8 +223,8 @@ test('multi-disc album', function (t) {
   t.equal(
     album.dump(),
     'Gerry  The Pacemakers/Skiffle Bloodbath/\n' +
-      '   Gerry  The Pacemakers - Skiffle Bloodbath - 01 - Everybody Lets Booze Up and Riot.mp3\n' +
-      '   Gerry  The Pacemakers - Skiffle Bloodbath - 01 - Everybody Lets Booze Up and Riot [trance mix].mp3\n' +
+      '   01.01 - Gerry  The Pacemakers - Skiffle Bloodbath - Everybody Lets Booze Up and Riot.mp3\n' +
+      '   02.01 - Gerry  The Pacemakers - Skiffle Bloodbath - Everybody Lets Booze Up and Riot [trance mix].mp3\n' +
       '(unpacked to /tmp/Gerry & The Pacemakers/Skiffle Bloodbath)\n',
     'album dump includes tracks'
   )

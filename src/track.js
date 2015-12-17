@@ -66,9 +66,12 @@ export default class Track {
 
   fullName () {
     let name = ''
+    if (this.index) {
+      if (this.disc) name += sprintf('%02d.', this.disc)
+      name += sprintf('%02d - ', this.index)
+    }
     if (this.artist) name += this.artist.name + ' - '
     if (this.album) name += this.album.name + ' - '
-    if (this.index) name += sprintf('%02d', this.index) + ' - '
     name += this.name
     if (this.file && this.file.ext) name += this.file.ext
     return name

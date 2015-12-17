@@ -70,8 +70,8 @@ test('other data', function (t) {
   t.equal(mbtrack.disc, 1)
   t.equal(mbtrack.getSize(), 1234)
   t.equal(mbtrack.getSize(512), 3)
-  t.equal(mbtrack.fullName(), 'MBArtist - MBAlbum - 01 - From Musicbrainz.mp3')
-  t.equal(mbtrack.safeName(), 'MBArtist - MBAlbum - 01 - From Musicbrainz.mp3')
+  t.equal(mbtrack.fullName(), '01.01 - MBArtist - MBAlbum - From Musicbrainz.mp3')
+  t.equal(mbtrack.safeName(), '01.01 - MBArtist - MBAlbum - From Musicbrainz.mp3')
 
   var flacartist = new Artist('FLACArtist')
   var flacalbum = new SingletrackAlbum('FLACAlbum', flacartist)
@@ -99,8 +99,8 @@ test('other data', function (t) {
   t.equal(flactrack.disc, 1)
   t.equal(flactrack.getSize(), 1234)
   t.equal(flactrack.getSize(512), 3)
-  t.equal(flactrack.fullName(), 'FLACArtist - FLACAlbum - 01 - FLACTrack.flac')
-  t.equal(flactrack.safeName(), 'FLACArtist - FLACAlbum - 01 - FLACTrack.flac')
+  t.equal(flactrack.fullName(), '01.01 - FLACArtist - FLACAlbum - FLACTrack.flac')
+  t.equal(flactrack.safeName(), '01.01 - FLACArtist - FLACAlbum - FLACTrack.flac')
 
   t.end()
 })
