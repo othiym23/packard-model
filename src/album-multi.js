@@ -34,6 +34,9 @@ export default class MultitrackAlbum extends Album {
   }
 
   getDate () {
+    // allow explicit setting of the date
+    if (this.date) return this.date
+
     const dates = this.tracks.reduce((s, t) => s.add(t.date), new Set())
     if (dates.size > 1) {
       log.warn('album', 'tracks have inconsistent dates', [...dates])
