@@ -18,7 +18,7 @@ export default class File {
   }
 
   safeName () {
-    return this.name.replace(/[^ ()\]\[A-Za-z0-9.-]/g, '')
+    return this.name.replace(/[^ ()\][A-Za-z0-9.-]/g, '')
   }
 
   getSize (bs = 1) {

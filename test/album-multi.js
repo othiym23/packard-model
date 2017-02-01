@@ -102,44 +102,45 @@ test('multitrack album with tracks with dates', function (t) {
     artist,
     {
       path: '/tmp/Gerry & The Pacemakers/Skiffle Bloodbath',
-      tracks: [new Track(
-        "Everybody Let's Booze Up and Riot",
-        new MultitrackAlbum(
-          'Skiffle Bloodbath',
-          new Artist('The Beatles')
-        ),
-        artist,
-        {
-          index: 1,
-          date: '2014-11-04',
-          path: '-',
-          ext: '.mp3',
-          stats: {
-            size: 1,
-            blockSize: 512,
-            blocks: 1
+      tracks: [
+        new Track(
+          "Everybody Let's Booze Up and Riot",
+          new MultitrackAlbum(
+            'Skiffle Bloodbath',
+            new Artist('The Beatles')
+          ),
+          artist,
+          {
+            index: 1,
+            date: '2014-11-04',
+            path: '-',
+            ext: '.mp3',
+            stats: {
+              size: 1,
+              blockSize: 512,
+              blocks: 1
+            }
           }
-        }
-      ),
-      new Track(
-        "Everybody Let's Booze Up and Riot [trance mix]",
-        new MultitrackAlbum(
-          'Skiffle Bloodbath',
-          new Artist('The Beatles')
         ),
-        artist,
-        {
-          index: 2,
-          date: '2014-11-16',
-          path: '-',
-          ext: '.mp3',
-          stats: {
-            size: 1,
-            blockSize: 512,
-            blocks: 1
+        new Track(
+          "Everybody Let's Booze Up and Riot [trance mix]",
+          new MultitrackAlbum(
+            'Skiffle Bloodbath',
+            new Artist('The Beatles')
+          ),
+          artist,
+          {
+            index: 2,
+            date: '2014-11-16',
+            path: '-',
+            ext: '.mp3',
+            stats: {
+              size: 1,
+              blockSize: 512,
+              blocks: 1
+            }
           }
-        }
-      )]
+        )]
     }
   )
   t.equal(album.getSize(), 2, 'only tracks adding size to new album')
@@ -169,49 +170,50 @@ test('multi-disc album', function (t) {
     artist,
     {
       path: '/tmp/Gerry & The Pacemakers/Skiffle Bloodbath',
-      tracks: [new Track(
-        "Everybody Let's Booze Up and Riot",
-        new MultitrackAlbum(
-          'Skiffle Bloodbath',
-          new Artist('The Beatles')
-        ),
-        artist,
-        {
-          index: 1,
-          path: '-',
-          ext: '.mp3',
-          tags: {
-            disc: 1
-          },
-          stats: {
-            size: 1,
-            blockSize: 512,
-            blocks: 1
+      tracks: [
+        new Track(
+          "Everybody Let's Booze Up and Riot",
+          new MultitrackAlbum(
+            'Skiffle Bloodbath',
+            new Artist('The Beatles')
+          ),
+          artist,
+          {
+            index: 1,
+            path: '-',
+            ext: '.mp3',
+            tags: {
+              disc: 1
+            },
+            stats: {
+              size: 1,
+              blockSize: 512,
+              blocks: 1
+            }
           }
-        }
-      ),
-      new Track(
-        "Everybody Let's Booze Up and Riot [trance mix]",
-        new MultitrackAlbum(
-          'Skiffle Bloodbath',
-          new Artist('The Beatles')
         ),
-        artist,
-        {
-          index: 1,
-          date: '2014-11-16',
-          path: '-',
-          ext: '.mp3',
-          tags: {
-            disc: 2
-          },
-          stats: {
-            size: 1,
-            blockSize: 512,
-            blocks: 1
+        new Track(
+          "Everybody Let's Booze Up and Riot [trance mix]",
+          new MultitrackAlbum(
+            'Skiffle Bloodbath',
+            new Artist('The Beatles')
+          ),
+          artist,
+          {
+            index: 1,
+            date: '2014-11-16',
+            path: '-',
+            ext: '.mp3',
+            tags: {
+              disc: 2
+            },
+            stats: {
+              size: 1,
+              blockSize: 512,
+              blocks: 1
+            }
           }
-        }
-      )]
+        )]
     }
   )
   t.equal(album.getSize(), 2, 'only tracks adding size to new album')
