@@ -1,6 +1,6 @@
 {
   "name": "@packard/model",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "description": "entity types used by the packard audio file management suite",
   "main": "lib/index.js",
   "jsnext:main": "src/index.js",
